@@ -1,0 +1,51 @@
+<section id="showcase-inner" class="showcase-search text-white py-5">
+   <div class="container">
+     <div class="row text-center">
+       <div class="col-md-12">
+         <form action="{% url 'search' %}">
+
+           <!-- Form Row 1 -->
+
+           <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <select id="category" name="category" class="form-control" size="1">
+                    <!-- <option disabled="disabled" >Choose Category</option> -->
+
+                      <option value="P"
+                      {% if "P" == values.category %}
+                        selected
+                      {% endif %}
+                      selected="true"
+                      >Product</option>
+
+                      <option value="S"
+                      {% if "S" == values.category %}
+                        selected
+                      {% endif %}
+                      >Service</option>
+
+                  </select>
+                </div>
+
+             <div class="col-md-4 mb-3">
+               <label class="sr-only">Keywords</label>
+               <input type="text" name="keywords" class="form-control" placeholder="Keyword (Sheet, Pipes, etc)"  value="{{ values.keywords }}"/>
+             </div>
+
+             <div class="col-md-4 mb-3">
+               <label class="sr-only">Property</label>
+               <input type="text" name="property" class="form-control" placeholder="Name / Local Name / Pattern"  value="{{ values.property }}"/>
+             </div>
+              </div>
+
+              <!-- Form Row 2 -->
+              <!-- <div class="form-row"></div> -->
+              <button class="btn btn-secondary btn-block mt-4" type="submit">
+                Submit form
+              </button>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </section>

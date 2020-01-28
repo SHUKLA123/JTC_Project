@@ -1,0 +1,227 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+| {{ service.name|title }}
+{% endblock %}
+{% load cust_filters %}
+{% block content %}
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'services' %}">Services</a>
+        </li>
+        <li class="breadcrumb-item active">{{ service.name|title }}
+          {% if service.local_name %}
+           | {{ service.local_name|title }}
+          {% endif %}
+         </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Listing -->
+<section id="listing" class="py-4">
+  <div class="container">
+    <!-- Alerts -->
+    {% include 'partials/_alerts.html' %}
+    <a href="{% url 'services' %}" class="btn btn-light mb-4"
+      >Back To Services</a
+    >
+    <div class="row">
+      <div class="col-lg-9 col-md-12">
+        <!-- Home Main Image -->
+        <div class="col-md-12 border rounded">
+          <img
+            src="{{ service.main_photo.url }}"
+            alt=""
+            class="img-main img-fluid mb-3"
+          />
+        </div>
+        <!-- Thumbnails -->
+        <div class="row mb-5 thumbs pt-3 d-flex justify-content-around">
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ service.detail_photo_1.url }}" data-lightbox="home-images">
+              <img src="{{ service.detail_photo_1.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ service.detail_photo_2.url }}" data-lightbox="home-images">
+              <img src="{{ service.detail_photo_2.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ service.detail_photo_3.url }}" data-lightbox="home-images">
+              <img src="{{ service.detail_photo_3.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+        </div>
+        <!-- Fields -->
+        <div class="row mb-5 fields">
+          <div class="col-md-12">
+            <ul class="list-group border list-group-flush">
+              {% if service.name %}
+              <li class="list-group-item text-secondary">
+                Name :
+                <span class="float-right">{{ service.name }}</span>
+              </li>
+              {% endif %}
+
+              <!--{% if product.local_name %}
+              <li class="list-group-item text-secondary">
+                Local Name :
+                <span class="float-right">{{ product.local_name }}</span>
+              </li>
+              {% endif %} -->
+
+              {% if service.price %}
+              <li class="list-group-item text-secondary">
+                Price :
+                <span class="float-right">{{ service.price }}</span>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <h2>Description : </h2>
+            <p class="lead">
+              {{ service.description }}
+            </p>
+            <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Mollitia recusandae esse reiciendis officia omnis non rerum
+            dicta cupiditate nostrum molestias deserunt aut minus
+            inventore animi atque, consequuntur ad fugit. Possimus culpa
+            blanditiis repellendus ipsa similique ullam, natus error dolor
+            harum. -->
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-3 col-md-12">
+        <p>
+          To order this product directly from company and as per your
+          choice (customized) and get <b>5% off</b> staright, Please do fill the form by clicking:
+        </p>
+
+        <button
+          class="btn btn-primary btn-block btn-lg"
+          data-toggle="modal"
+          data-target="#inquiryModal"
+        >
+          Make An Inquiry
+        </button>
+
+    </div>
+
+
+  </div>
+</section>
+
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalLabel">
+          Make An Inquiry
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'servicecontact' %}" method="POST">
+
+          {% csrf_token %}
+
+            {% if user.is_authenticated %}
+
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+
+            {% else %}
+
+            <input type="hidden" name="user_id" value="0">
+
+            {% endif %}
+            <input type="hidden" name="service_id" value="{{ service.id }}">
+
+
+          <div class="form-group">
+            <label for="service" class="col-form-label"
+              >Sercice:</label
+            >
+            <input
+              type="text"
+              name="service"
+              class="form-control"
+              value="{{ service.name }}"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="col-form-label">Name:</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              {% if user.is_authenticated %}
+              value="{{ user.first_name|title }} {{ user.last_name|title }}"
+              {% endif %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-form-label">Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              {% if user.is_authenticated %}
+              value="{{ user.email }}"
+              {% endif %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone" class="col-form-label">Phone:</label>
+            <input type="text" name="phone" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-form-label">Message:</label>
+            <textarea name="message" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="address" class="col-form-label">Address:</label>
+            <textarea name="address" class="form-control"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="order" class="col-form-label">Order Now:  </label>
+            <input type="checkbox" name="order" class="form-check-label" />
+          </div>
+          <hr />
+          <input
+            type="submit"
+            value="Send"
+            class="btn btn-block btn-secondary"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

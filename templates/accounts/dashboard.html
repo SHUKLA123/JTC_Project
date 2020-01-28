@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}
+| Dashboard - {{ user.username|title }}
+{% endblock %}
+
+{% block content %}
+
+      <section id="showcase-inner" class="py-5 text-white">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-12">
+              <h1 class="display-4">User Dashboard</h1>
+              <p class="lead">Manage your JTC account</p>
+              {% include 'partials/_alerts.html' %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Breadcrumb -->
+      <section id="bc" class="mt-3">
+        <div class="container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}"> <i class="fas fa-home"></i> Home</a>
+              </li>
+              <li class="breadcrumb-item active">Dashboard</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+
+      <section id="dashboard" class="py-4 shadow-lg p-2 mb-4 bg-white rounded">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-12">
+              <h2>Welcome <b>{{ user.username|title }}</b></h2>
+
+              {% if user_contacts or service_contacts %}
+              {% if user_contacts %}
+
+              <p>
+                Here are the Services/Products that you have inquired/ordered
+                about:
+              </p>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th scope="col">S.No.</th>
+                    <th>Inquiry / Order</th>
+                    <th scope="col">Product / Service</th>
+                    <th>Status</th>
+                    <th>URL</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for user_contact in user_contacts %}
+
+                  <tr>
+                    <td> # </td>
+                    <td>
+                      {% if user_contact.order %}
+                       Order
+                      {% else %}
+                       Inquiry
+                      {% endif %}
+                    </td>
+                    <td>{{ user_contact.product }}</td>
+                    <td>{% if user_contact.completed %}
+                      Completed
+                      {% else %}
+                      in touch
+                      {% endif %}</td>
+                    <td>
+                      <a class="btn btn-light" href="{% url 'product' user_contact.product_id %}">View</a>
+                    </td>
+
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+
+                  {% if service_contacts %}
+
+                  {% for user_service_contact in service_contacts %}
+                  <tr>
+                    <td> # </td>
+                    <td>
+                      {% if user_contact.order %}
+                       Order
+                      {% else %}
+                       Inquiry
+                      {% endif %}
+                    </td>
+                    <td>{{ user_service_contact.service }}</td>
+
+                    <td>{% if user_service_contact.completed %}
+                      Completed
+                      {% else %}
+                      in touch
+                      {% endif %}</td>
+                    <td>
+                      <a class="btn btn-light" href="{% url 'service' user_service_contact.service_id %}">View</a>
+                    </td>
+                  </tr>
+                  {% endfor %}
+                  {% endif %}
+                </tbody>
+              </table>
+              {% else %}
+              <p class="lead">You haven't Inquired/Ordered. Do it <a class="btn btn-info" href="{% url 'products' %}"> NOW </a></p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      </section>
+
+{% endblock %}

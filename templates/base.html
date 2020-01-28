@@ -1,0 +1,49 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="authors" content="Manish Bainsla, immanishbainsla, Niranjan Shukla, Kranti Prasad, Aman Kumar, Rahul Saini, Team Code Warriors">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- Custom -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <!-- Font Awesome -->
+    <!-- <link rel="stylesheet" href=" static 'css/all.css' "> -->
+    <link rel="stylesheet" href="{% static 'css/all.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <!-- Lightbox -->
+    <link rel="stylesheet" href="{% static 'css/lightbox.min.css' %}">
+    <!-- Icon -->
+    <link rel="icon" href="{% static 'img/title1.png' %}" type="image/icon">
+    <!-- Title -->
+    <title>Jindal Trading Company {% block title %}{% endblock %}</title>
+    {% block head_block %}{% endblock %}
+</head>
+<body class="pl-sm-1 pl-md-3 pl-lg-5 pr-sm-1 pr-md-3 pr-lg-5" oncontextmenu="return false;">
+    <!-- Top Bar -->
+    {% include 'partials/_topbar.html' %}
+
+    <div class="shadow-lg p-2 mb-4 bg-white rounded">
+    <!-- Navbar -->
+    {% include 'partials/_navbar.html' %}
+
+    {% block content %}{% endblock %}
+
+    <!-- Footer -->
+    {% include 'partials/_footer.html' %}
+
+  </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'js/jquery-3.3.1.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/lightbox.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    <script type="text/javascript">
+      new wow().init();
+    </script>
+</body>
+</html>

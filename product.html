@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %}
+| {{ product.name|title }}
+{% endblock %}
+
+{% block content %}
+<!-- Breadcrumb -->
+<section id="bc" class="mt-3">
+  <div class="container">
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="{% url 'index' %}">Home</a>
+        </li>
+        <li class="breadcrumb-item">
+          <a href="{% url 'products' %}">Products</a>
+        </li>
+        <li class="breadcrumb-item active">{{ product.name|title }}
+          {% if product.local_name %}
+           | {{ product.local_name|title }}
+          {% endif %}
+         </li>
+      </ol>
+    </nav>
+  </div>
+</section>
+
+<!-- Listing -->
+<section id="listing" class="py-4">
+  <div class="container">
+    <!-- Alerts -->
+    {% include 'partials/_alerts.html' %}
+    <a href="{% url 'products' %}" class="btn btn-light mb-4"
+      >Back To Products</a
+    >
+    <div class="row">
+      <div class="col-lg-9 col-md-12">
+        <!-- Home Main Image -->
+        <div class="col-md-12 border rounded">
+          <img
+            src="{{ product.main_photo.url }}"
+            alt=""
+            class="img-main img-fluid mb-3"
+          />
+        </div>
+        <!-- Thumbnails -->
+        <div class="row mb-5 thumbs pt-3 d-flex justify-content-around">
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ product.detail_photo_1.url }}" data-lightbox="home-images">
+              <img src="{{ product.detail_photo_1.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ product.detail_photo_2.url }}" data-lightbox="home-images">
+              <img src="{{ product.detail_photo_2.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+          <div class="col-md-2 col-sm-3 pb-3 thumb-s border rounded">
+            <a href="{{ product.detail_photo_3.url }}" data-lightbox="home-images">
+              <img src="{{ product.detail_photo_3.url }}" alt="" class="img-fluid" />
+            </a>
+          </div>
+        </div>
+        <!-- Fields -->
+        <div class="row mb-5 fields">
+          <div class="col-md-12">
+            <ul class="list-group list-group-flush">
+              {% if product.name %}
+              <li class="list-group-item text-secondary">
+                Name :
+                <span class="float-right">{{ product.name }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.local_name %}
+              <li class="list-group-item text-secondary">
+                Local Name :
+                <span class="float-right">{{ product.local_name }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.price %}
+              <li class="list-group-item text-secondary">
+                Price :
+                <span class="float-right">{{ product.price }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.size %}
+              <li class="list-group-item text-secondary">
+                Size :
+                <span class="float-right">{{ product.size }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.pattern %}
+              <li class="list-group-item text-secondary">
+                Pattern :
+                <span class="float-right">{{ product.pattern }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.thickness %}
+              <li class="list-group-item text-secondary">
+                Thickness :
+                <span class="float-right">{{ product.thickness }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.brand_name %}
+              <li class="list-group-item text-secondary">
+                Brand Name :
+                <span class="float-right">{{ product.brand_name }}</span>
+              </li>
+              {% endif %}
+
+              {% if product.customisable %}
+              <li class="list-group-item text-secondary">
+                Customisable :
+                <span class="float-right">True</span>
+              </li>
+              {% endif %}
+
+            </ul>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="row mb-5">
+          <div class="col-md-12">
+            <h2>Description : </h2>
+            <p class="lead">
+              {{ product.description }}
+            </p>
+            <!-- Lorem ipsum dolor sit amet consectetur adipisicing elit.
+            Mollitia recusandae esse reiciendis officia omnis non rerum
+            dicta cupiditate nostrum molestias deserunt aut minus
+            inventore animi atque, consequuntur ad fugit. Possimus culpa
+            blanditiis repellendus ipsa similique ullam, natus error dolor
+            harum. -->
+          </div>
+        </div>
+
+      </div>
+      <div class="col-lg-3 col-md-12">
+        <p>
+          To order this product directly from company and as per your
+          choice (customized) and get <b>5% off</b> staright, Please do fill the form by clicking:
+        </p>
+
+        <button
+          class="btn btn-primary btn-block btn-lg"
+          data-toggle="modal"
+          data-target="#inquiryModal"
+        >
+          Make An Inquiry
+        </button>
+        {% if product.amazon_link %}
+        <a href="{{ product.amazon_link}}" class="btn btn-block amazon btn-lg">
+          <i class="fab fa-amazon"></i>
+          Buy on Amazon
+        </a>
+        {% endif %}
+
+
+        {% if product.flipkart_link %}
+        <a href="{{ product.flipkart_link}}"
+        class="btn btn-block flipkart btn-lg"
+        >
+        <i class="fas fa-shopping-cart"></i>
+        Buy on Flipkart
+      </a>
+        {% endif %}
+      </div>
+      <div class="col-md-9 border rounded">
+
+        {% if comments %}
+
+        <h2 class="mt-5">Comments : <hr></h2>
+        {% for comment in comments %}
+        <p class="comment">
+          <span class="c-name mt-2">Name : {{ comment.name }}</span>
+          <br>
+          <span class="c-name mt-2">Rating : {{ comment.rating }} stars</span>
+          <br>
+          <span class="c-name mt-2">Comment : </span>
+          <span class="comment-text">{{ comment.comment }}</span>
+        </p>
+        {% endfor %}
+
+        {% else %}
+        <p>No Comments Available.</p>
+        {% endif %}
+      </div>
+    </div>
+
+
+  </div>
+</section>
+
+<!-- Inquiry Modal -->
+<div class="modal fade" id="inquiryModal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="inquiryModalLabel">
+          Make An Inquiry
+        </h5>
+        <button type="button" class="close" data-dismiss="modal">
+          <span>&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="{% url 'contact' %}" method="POST">
+
+          {% csrf_token %}
+
+            {% if user.is_authenticated %}
+
+              <input type="hidden" name="user_id" value="{{ user.id }}">
+
+            {% else %}
+
+            <input type="hidden" name="user_id" value="0">
+
+            {% endif %}
+            <input type="hidden" name="product_id" value="{{ product.id }}">
+
+
+          <div class="form-group">
+            <label for="product" class="col-form-label"
+              >Product:</label
+            >
+            <input
+              type="text"
+              name="product"
+              class="form-control"
+              value="Decorted Sheet"
+            />
+          </div>
+          <div class="form-group">
+            <label for="name" class="col-form-label">Name:</label>
+            <input
+              type="text"
+              name="name"
+              class="form-control"
+              {% if user.is_authenticated %}
+              value="{{ user.first_name|title }} {{ user.last_name|title }}"
+              {% endif %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="email" class="col-form-label">Email:</label>
+            <input
+              type="email"
+              name="email"
+              class="form-control"
+              {% if user.is_authenticated %}
+              value="{{ user.email }}"
+              {% endif %}
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label for="phone" class="col-form-label">Phone:</label>
+            <input type="text" name="phone" class="form-control" />
+          </div>
+          <div class="form-group">
+            <label for="message" class="col-form-label">Message:</label>
+            <textarea name="message" class="form-control"></textarea>
+          </div>
+          <hr />
+          <input
+            type="submit"
+            value="Send"
+            class="btn btn-block btn-secondary"
+          />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}

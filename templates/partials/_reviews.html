@@ -1,0 +1,39 @@
+{% load static %}
+<section id="comment" class="pt-2 shadow-lg p-2 mb-4 bg-white rounded">
+        <div class="container">
+          <h2 class="text-center mb-3 pb-3">
+            <span class="heading pr-2 pl-2 pb-1">Prestigious Reviews</span>
+          </h2>
+      <div class="actionBox">
+        {% if comments %}
+                <ul class="commentList">
+                    {% for comment in comments %}
+                  <li>
+                    <div class="commenterImage">
+                      <img src="{% static 'img/dummy.png' %}" />
+                    </div>
+                    <div class="commentText">
+
+                      <p class="commenter">{{ comment.name }}</p>
+                      {% load cust_filters %}
+                      {% with a="*" %}
+                      {% if comment.rating %}
+                      {% for i in comment.rating|times %}
+                      <span class="fa fa-star checkedc"></span>
+                      {% endfor %}
+                      {% endif %}
+                      {% endwith %}
+                      <p class="">{{ comment.comment }}</p>
+                      <span class="date sub-text">on {{ comment.list_date }}</span>
+                    </div>
+                  </li>
+                  <hr>
+                  {% endfor %}
+                </ul>
+
+                {% else %}
+                <p>No Comments Available.</p>
+                {% endif %}
+          </div>
+        </div>
+      </section>
